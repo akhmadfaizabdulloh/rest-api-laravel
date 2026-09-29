@@ -24,9 +24,9 @@ class PostController extends Controller
     }
 
     // Eager Loading Example
-    public function show2($id)
-    {
-        $post = Post::findOrFail($id);
-        return new PostDetailResource($post);
-    }
+    // public function show2($id)
+    // {
+    //     $post = Post::findOrFail($id);
+    //     return new PostDetailResource($post);
+    // }
 }

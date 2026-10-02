@@ -26,11 +26,22 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/posts', [PostController::class, 'index'])->middleware('auth:sanctum');
-Route::get('/posts/{id}', [PostController::class, 'show'])->middleware('auth:sanctum');
+// Route::get('/posts', [PostController::class, 'index'])->middleware('auth:sanctum');
+// Route::get('/posts/{id}', [PostController::class, 'show'])->middleware('auth:sanctum');
 // Route::get('/posts2/{id}', [PostController::class, 'show2']);    // Eager Loading Example
 
 // Authentication Routes
+// Route::post('/login', [AuthenticationController::class, 'login']);
+// Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
+// Route::get('/me', [AuthenticationController::class, 'me'])->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthenticationController::class, 'logout']);
+    Route::get('/me', [AuthenticationController::class, 'me']);
+    Route::post('/posts', [PostController::class, 'store']);
+});
+
 Route::post('/login', [AuthenticationController::class, 'login']);
-Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('/me', [AuthenticationController::class, 'me'])->middleware('auth:sanctum');
+
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{id}', [PostController::class, 'show']);

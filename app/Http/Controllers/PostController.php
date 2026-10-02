@@ -85,4 +85,19 @@ class PostController extends Controller
 
         return new PostDetailResource($post->loadMissing('writer:id,username'));
     }
+
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
+
+        // return response()->json(['message' => 'Post deleted successfully']);
+        // return new PostDetailResource($post->loadMissing('writer:id,username'));
+
+        return response()->json([
+            'message' => 'Post deleted successfully',
+            'data' => (new PostDetailResource($post->loadMissing('writer:id,username')))->resolve()
+        ], 200);
+
+    }
 }

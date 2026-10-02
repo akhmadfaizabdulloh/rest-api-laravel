@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthenticationController::class, 'me']);
     Route::post('/posts', [PostController::class, 'store']);
     Route::patch('/posts/{id}', [PostController::class, 'update'])->middleware('user.authorized');
+    Route::delete('/posts/{id}', [PostController::class, 'destroy'])->middleware('user.authorized');
 });
 
 Route::post('/login', [AuthenticationController::class, 'login']);

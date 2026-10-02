@@ -13,8 +13,11 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+        // $posts = Post::with('writer:id,username')->get();
+
         // return response()->json(['data' => $posts]);
-        return PostResource::collection($posts);
+        // return PostResource::collection($posts);
+        return PostDetailResource::collection($posts->loadMissing('writer:id,username'));
     }
 
     public function show($id)
@@ -47,5 +50,26 @@ class PostController extends Controller
 
         return new PostDetailResource($post->loadMissing('writer:id,username'));
         // return response()->json(['data' => $post], 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        // dd('ini method update');
+        $post = Post::findOrFail($id);
+
+        // Check if the authenticated user is the author of the post
+        if ($post->author !== Auth::user()->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'title' => 'sometimes|required|string|max:255',
+            'news_content' => 'sometimes|required|string',
+        ]);
+
+        $post->update($request->all());
+
+        return new PostDetailResource($post->loadMissing('writer:id,username'));
     }
 }

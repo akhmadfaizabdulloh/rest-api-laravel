@@ -18,7 +18,8 @@ class UserAuthorized
      */
     public function handle(Request $request, Closure $next)
     {
-        // dd('ini middleware user authorized');
+        // Pemilik-Postingan
+        // dd('ini middleware user authorized'); 
 
         $currentUser = Auth::user();
         // return response()->json($currentUser);

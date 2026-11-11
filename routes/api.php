@@ -37,12 +37,16 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/me', [AuthenticationController::class, 'me'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
+    
     Route::post('/logout', [AuthenticationController::class, 'logout']);
     Route::get('/me', [AuthenticationController::class, 'me']);
+
     Route::post('/posts', [PostController::class, 'store']);
     Route::patch('/posts/{id}', [PostController::class, 'update'])->middleware('user.authorized');
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->middleware('user.authorized');
+
     Route::post('/comment', [CommentController::class, 'store']);
+    Route::patch('/comment/{id}', [CommentController::class, 'update'])->middleware('pemilik.komentar');
 });
 
 Route::post('/login', [AuthenticationController::class, 'login']);

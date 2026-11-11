@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class CommentController extends Controller
         $request['user_id'] = auth()->id();
         $comment = Comment::create($request->all());
 
-        return response()->json($comment, 201);
+        return new CommentResource($comment->loadMissing(['commentator:id,username']), 201);
     }
 
     // duplicate method example
@@ -36,4 +37,16 @@ class CommentController extends Controller
 
     //     return response()->json($comment, 201);
     // }
+
+    public function update(Request $request, $id)
+    {
+        // $request->validate([
+        //     'comments_content' => 'required|string',
+        // ]);
+
+        // $comment = Comment::findOrFail($id);
+        // $comment->update($request->only('comments_content'));
+
+        // return new CommentResource($comment->loadMissing(['commentator:id,username']));
+    }
 }

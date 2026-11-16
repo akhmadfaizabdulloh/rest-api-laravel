@@ -17,14 +17,15 @@ class PostController extends Controller
 
         // return response()->json(['data' => $posts]);
         // return PostResource::collection($posts);
-        return PostDetailResource::collection($posts->loadMissing('writer:id,username'));
+        return PostDetailResource::collection($posts->loadMissing(['writer:id,username', 'comments:id,post_id,user_id,comments_content']));
     }
 
     public function show($id)
     {
         $post = Post::with('writer:id,username')->findOrFail($id);
         // return response()->json(['data' => $post]);
-        return new PostDetailResource($post);
+        // return new PostDetailResource($post);
+        return new PostDetailResource($post->loadMissing(['writer:id,username', 'comments:id,post_id,user_id,comments_content']));
     }
 
     // Eager Loading Example
